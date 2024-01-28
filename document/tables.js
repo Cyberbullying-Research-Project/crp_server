@@ -2,17 +2,23 @@
 // Docs: https://dbml.dbdiagram.io/docs
 
 /*
-Table follows {
-  following_user_id integer
-  followed_user_id integer
-  created_at timestamp 
+
+Table categories {
+  id integer [primary key]
+  name varchar
+  description varchar
+  keywords varchar
 }
 
-Table users {
+Table narratives {
   id integer [primary key]
-  username varchar
-  role varchar
-  created_at timestamp
+  title varchar
+  body text [note: 'Narrativa digital']
+  user_id integer
+  status varchar
+  created_at timestamp  
+  posts post_id
+  category category_id
 }
 
 Table posts {
@@ -22,12 +28,34 @@ Table posts {
   user_id integer
   status varchar
   created_at timestamp
+  resources resource_id
 }
 
-Ref: posts.user_id > users.id // many-to-one
+Table resources{
+  id integer [primary key]
+  name varchar
+  description varchar
+  created_at timestamp
+  created_by user_id
+  path varchar
+  type varchar
+  size number
+}
 
-Ref: users.id < follows.following_user_id
+Table users {
+  id integer [primary key]
+  username varchar
+  password varchar
+  image varchar
+  role varchar
+  created_at timestamp
+  narratives narrative_id
+}
 
-Ref: users.id < follows.followed_user_id
 
+Ref: users.id < narratives.id 
+Ref: narratives.id < posts.id 
+Ref: posts.id < resources.id
+Ref: resources.created_by > users.id
+Ref: narratives.category > categories.id
 */
